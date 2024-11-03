@@ -1,4 +1,3 @@
-// cmd/app/signal_handler.go
 package main
 
 import (

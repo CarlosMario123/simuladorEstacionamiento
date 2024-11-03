@@ -1,9 +1,6 @@
-
 package elements
-
 import (
     "image/color"
-
     "github.com/hajimehoshi/ebiten/v2"
     "github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )

@@ -12,7 +12,7 @@ import (
 Este nos permite generar carros con llegadas utilizando la distribucion 
 de poison
 
-ṕara realizar eventos aleatorios en tiempo discreto.
+para realizar eventos aleatorios en tiempo discreto.
 */
 
 func GenerateCars(totalCars int, ch chan<- *models.Car, wg *sync.WaitGroup) {

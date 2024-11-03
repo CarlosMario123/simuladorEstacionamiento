@@ -26,7 +26,6 @@ type Car struct {
     lastAttemptTime time.Time 
 }
 
-
 func NewCar(id int) *Car {
     return &Car{
         ID:              id,
@@ -43,15 +42,13 @@ func NewCar(id int) *Car {
         lastAttemptTime: time.Now(),
     }
 }
-
 // avanza a derecha
 func (c *Car) Move() {
-    c.Position += 0.02 
+    c.Position += 0.0090
     if c.Position > 1.0 {
         c.Position = 1.0
     }
 }
-
 func (c *Car) MoveExit() {
     c.Position -= 0.02 
     if c.Position < -0.1 { 
@@ -64,7 +61,6 @@ func (c *Car) ShouldAttemptParking() bool {
 
     return time.Since(c.lastAttemptTime) > 3*time.Second
 }
-
 // reinicia el tiempo del ultimo intento
 func (c *Car) ResetParkingAttempt() {
     c.lastAttemptTime = time.Now()
