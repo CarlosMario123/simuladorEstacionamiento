@@ -4,21 +4,18 @@ package view
 import (
     "fmt"
     "simulador/src/core/models"
+    "simulador/src/view/elements"
     "sync"
-
     "github.com/hajimehoshi/ebiten/v2"
 )
 
-const (
-    MaxQueueSize = 30 // Capacidad máxima de la cola de espera
-)
-
-// GUI representa la interfaz gráfica del simulador
 type GUI struct {
     ParkingLot    *models.ParkingLot
-    CarsInMotion  []*models.Car // Carros que están moviéndose (Searching o Exiting)
-    CarsWaiting   []*models.Car // Carros que están en la cola de espera
-    ParkedCars    []*models.Car // Carros estacionados
+    CarsInMotion  []*models.Car
+    CarsWaiting   []*models.Car
+    ParkedCars    []*models.Car
+    Queue         *models.Queue          
+    QueueView     *elements.QueueView    
     Mutex         sync.Mutex
     windowWidth   int
     windowHeight  int
@@ -29,14 +26,22 @@ type GUI struct {
     shouldExit    bool
 }
 
-// NewGUI crea una nueva instancia de GUI
+const (
+    MaxQueueSize = 30 
+)
+
 func NewGUI(parkingLot *models.ParkingLot, totalCars int) *GUI {
+    queue := models.NewQueue(MaxQueueSize) 
+    queueView := elements.NewQueueView(queue, QueueStartX, QueueStartY, QueueWidth, QueueHeight) // Inicializa `QueueView` con `Queue`
+
     return &GUI{
         ParkingLot:    parkingLot,
         CarsInMotion:  []*models.Car{},
         CarsWaiting:   []*models.Car{},
         ParkedCars:    []*models.Car{},
-        windowWidth:   1000, // Aumentar el ancho para mayor espacio visual
+        Queue:         queue,        
+        QueueView:     queueView,     
+        windowWidth:   1000,
         windowHeight:  600,
         totalCars:     totalCars,
         processedCars: 0,
@@ -45,7 +50,7 @@ func NewGUI(parkingLot *models.ParkingLot, totalCars int) *GUI {
     }
 }
 
-// AddCar añade un carro al GUI, poniéndolo en movimiento
+
 func (gui *GUI) AddCar(car *models.Car) {
     gui.CarsInMotion = append(gui.CarsInMotion, car)
     car.Estado = models.Searching
@@ -61,7 +66,11 @@ func (gui *GUI) Run() {
     }
 }
 
-// Stop cierra el canal quit para detener el GUI
+
 func (gui *GUI) Stop() {
     close(gui.quit)
+}
+
+func (gui *GUI) Layout(outsideWidth, outsideHeight int) (int, int) {
+    return gui.windowWidth, gui.windowHeight
 }

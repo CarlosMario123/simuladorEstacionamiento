@@ -4,12 +4,12 @@ import (
     "fmt"
     "simulador/src/core/models"
     "time"
-
     "github.com/hajimehoshi/ebiten/v2"
 )
 
 
 func (gui *GUI) Update() error {
+
     select {
     case <-gui.quit:
         return nil
@@ -98,7 +98,6 @@ func (gui *GUI) checkParkedCars() {
                 car.Position = 1.0 
                 gui.CarsInMotion = append(gui.CarsInMotion, car)
                 fmt.Printf("Carro %d marcado para salir.\n", car.ID)
-
 
                 if len(gui.CarsWaiting) > 0 {
                     waitingCar := gui.CarsWaiting[0]
