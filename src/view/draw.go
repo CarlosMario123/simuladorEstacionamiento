@@ -6,11 +6,8 @@ import (
     "simulador/src/core/models"
     "simulador/src/view/elements/city"
     "simulador/src/view/elements/parking"
-    
     "simulador/src/view/elements/vehicle"
-
     "github.com/hajimehoshi/ebiten/v2"
-    "github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
 const (
@@ -29,32 +26,26 @@ const (
     SpacesPerRow   = 5
 )
 
-// Draw renderiza todos los elementos gráficos en pantalla
 func (gui *GUI) Draw(screen *ebiten.Image) {
     gui.Mutex.Lock()
     defer gui.Mutex.Unlock()
 
-    // Fondo de pantalla
+
     screen.Fill(color.RGBA{R: 200, G: 200, B: 200, A: 255})
 
-    // Dibujar la ciudad
+
     city.DrawCityscape(screen, gui.windowWidth)
 
-    // Carretera de entrada
-    ebitenutil.DrawRect(screen, 0, float64(RoadYEntry), float64(gui.windowWidth), float64(RoadHeight), color.RGBA{R: 50, G: 50, B: 50, A: 255})
-    ebitenutil.DrawRect(screen, 0, float64(RoadYEntry+RoadHeight/2-1), float64(gui.windowWidth), 2, color.White)
 
-    // Carretera de salida
-    ebitenutil.DrawRect(screen, 0, float64(RoadYExit), float64(gui.windowWidth), float64(RoadHeight), color.RGBA{R: 50, G: 50, B: 50, A: 255})
-    ebitenutil.DrawRect(screen, 0, float64(RoadYExit+RoadHeight/2-1), float64(gui.windowWidth), 2, color.White)
+    city.DrawRoad(screen, 0, float64(RoadYEntry), float64(gui.windowWidth), float64(RoadHeight), color.RGBA{R: 50, G: 50, B: 50, A: 255}, color.White)
 
-    // Dibujar la cola de espera
+  
+    city.DrawRoad(screen, 0, float64(RoadYExit), float64(gui.windowWidth), float64(RoadHeight), color.RGBA{R: 50, G: 50, B: 50, A: 255}, color.White)
     gui.QueueView.Draw(screen)
 
-    // Dibujar el estacionamiento usando el paquete `parking`
     parking.DrawParkingSpaces(screen, gui.ParkingLot, ParkingStartX, ParkingStartY, SpaceWidth, SpaceHeight, Spacing, SpacesPerRow)
 
-    // Dibujar carros en la carretera de entrada (estado Searching)
+    // Dibujar carros en la carretera de entrada 
     for _, car := range gui.CarsInMotion {
         if car.Estado == models.Searching {
             posX := 50 + float64(car.Position)*700
@@ -63,7 +54,8 @@ func (gui *GUI) Draw(screen *ebiten.Image) {
         }
     }
 
-    // Dibujar carros en la carretera de salida (estado Exiting)
+  
+    // Dibujar carros en la carretera de salida
     for _, car := range gui.CarsInMotion {
         if car.Estado == models.Exiting {
             posX := 50 + float64(car.Position)*700
@@ -72,7 +64,7 @@ func (gui *GUI) Draw(screen *ebiten.Image) {
         }
     }
 
-    // Dibujar carros estacionados en el estacionamiento
+    
     for _, car := range gui.ParkedCars {
         row := (car.ParkingSpaceID - 1) / SpacesPerRow
         col := (car.ParkingSpaceID - 1) % SpacesPerRow

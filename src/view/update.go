@@ -6,8 +6,6 @@ import (
     "time"
     "github.com/hajimehoshi/ebiten/v2"
 )
-
-
 func (gui *GUI) Update() error {
 
     select {
