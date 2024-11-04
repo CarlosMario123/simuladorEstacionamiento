@@ -1,7 +1,6 @@
-// src/view/gui.go
 package view
-
 import (
+
     "fmt"
     "simulador/src/core/models"
     "simulador/src/view/elements"
@@ -57,7 +56,7 @@ func (gui *GUI) AddCar(car *models.Car) {
     fmt.Printf("Carro %d agregado a motion.\n", car.ID)
 }
 
-// Run inicia el bucle del juego usando ebiten
+
 func (gui *GUI) Run() {
     ebiten.SetWindowSize(gui.windowWidth, gui.windowHeight)
     ebiten.SetWindowTitle("Simulador de Estacionamiento")
@@ -67,10 +66,3 @@ func (gui *GUI) Run() {
 }
 
 
-func (gui *GUI) Stop() {
-    close(gui.quit)
-}
-
-func (gui *GUI) Layout(outsideWidth, outsideHeight int) (int, int) {
-    return gui.windowWidth, gui.windowHeight
-}

@@ -4,29 +4,13 @@ import (
     "fmt"
     "simulador/src/core/models"
     "time"
-    "github.com/hajimehoshi/ebiten/v2"
+    
+
 )
 func (gui *GUI) Update() error {
-
-    select {
-    case <-gui.quit:
-        return nil
-    default:
-    }
-
     gui.Mutex.Lock()
     defer gui.Mutex.Unlock()
-
-    // X cierra el programa
-    if ebiten.IsKeyPressed(ebiten.KeyX) {
-        fmt.Println("Salida manual activada por el usuario")
-        close(gui.quit)
-        gui.shouldExit = true
-        return nil
-    }
-
     updatedCarsInMotion := []*models.Car{}
-
     // Procesamiento de  carros en movimiento tanto salida como entrada
     for _, car := range gui.CarsInMotion {
         if car.Estado == models.Searching {
@@ -58,7 +42,8 @@ func (gui *GUI) Update() error {
             }
         } else if car.Estado == models.Exiting {
             car.MoveExit()
-            if car.Position < -0.1 { 
+          
+            if car.Position <= -0.1 { 
                 fmt.Printf("Carro %d ha salido de la pantalla.\n", car.ID)
                 gui.processedCars++
             } else {
@@ -67,13 +52,9 @@ func (gui *GUI) Update() error {
             }
         }
     }
-
     gui.CarsInMotion = updatedCarsInMotion
 
-   
-    gui.checkParkedCars()
-
-    
+    gui.checkParkedCars()    
     if gui.processedCars >= gui.totalCars && !gui.completed {
         fmt.Println("Todos los carros han sido procesados. Saliendo.")
         gui.completed = true
@@ -84,11 +65,11 @@ func (gui *GUI) Update() error {
 
     return nil
 }
-
 func (gui *GUI) checkParkedCars() {
     currentTime := time.Now()
     updatedParked := []*models.Car{}
     for _, car := range gui.ParkedCars {
+        
         if currentTime.After(car.ParkingEndTime) {
             err := gui.ParkingLot.ReleaseSpace(car)
             if err == nil {

@@ -1,3 +1,4 @@
+//src/view/elements/city/
 package city
 import (
     "image/color"
@@ -5,7 +6,7 @@ import (
     "github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
-func DrawCityscape(screen *ebiten.Image, width int) {
+func DrawCityscape(screen *ebiten.Image) {
     buildingColors := []color.Color{
         color.RGBA{R: 100, G: 100, B: 100, A: 255},
         color.RGBA{R: 150, G: 150, B: 150, A: 255},

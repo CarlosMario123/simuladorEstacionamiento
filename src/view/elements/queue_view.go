@@ -1,4 +1,4 @@
-// src/view/elements/queue_view.go
+// src/view/elements/
 package elements
 
 import (

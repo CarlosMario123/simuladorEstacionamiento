@@ -10,7 +10,7 @@ import (
 type ParkingLot struct {
     Capacity  int
     Spaces    []*ParkingSpace
-    semaphore chan struct{} // Semaforo para controlar la capacidad
+    semaphore chan struct{}
     mutex     sync.Mutex
 }
 

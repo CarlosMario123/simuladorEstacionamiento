@@ -1,26 +1,22 @@
 package services
 
 import (
-    "time"
-    "simulador/src/core/models"
-    "math/rand"
     "fmt"
+    "simulador/src/core/models"
     "sync"
+    "time"
+    "simulador/src/utils"
 )
 
-/*
-Este nos permite generar carros con llegadas utilizando la distribucion 
-de poison
-
-para realizar eventos aleatorios en tiempo discreto.
-*/
-
-func GenerateCars(totalCars int, ch chan<- *models.Car, wg *sync.WaitGroup) {
+func GenerateCars(totalCars int, ch chan<- *models.Car, wg *sync.WaitGroup, velocity []float64) {
     defer close(ch) 
 
+
+
     for i := 1; i <= totalCars; i++ {
-        interArrival := rand.ExpFloat64() / 1 
-        time.Sleep(time.Duration(interArrival * float64(time.Second)))
+    
+        randomDelay := utils.RandomDelay(velocity[0],velocity[1])
+        time.Sleep(randomDelay)
 
         car := models.NewCar(i)
         fmt.Printf("Carro %d generado.\n", car.ID)
