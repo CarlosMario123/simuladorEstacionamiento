@@ -1,5 +1,10 @@
 package main
+
+import (
+    "simulador/src/controller/simulator"
+)
 func main(){
-         start := NewStartApp()
-         start.StartSimulation()
+        simulator := simulator.NewSimulatorController()
+        simulator.Run()
+        
 }

@@ -37,7 +37,7 @@ func NewCar() *Car {
         ID:              rand.Intn(1000000),
         Estado:          Searching,
         Position:        0.0,
-        ParkingDuration: time.Duration(8 + rand.Intn(3)) * time.Second,
+        ParkingDuration: time.Duration(3 + rand.Intn(3)) * time.Second,
         Color: color.RGBA{
             R: uint8(rand.Intn(256)),
             G: uint8(rand.Intn(256)),
