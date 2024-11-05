@@ -5,8 +5,7 @@ import (
 	"simulador/src/core/models"
 	"simulador/src/core/services"
 	"simulador/src/view"
-
-	"sync"
+     "simulador/src/core/observer"
 )
 
 
@@ -16,12 +15,22 @@ func NewStartApp() *StartApp {
 }
 func (app *StartApp) StartSimulation() {
 	parkingLot := models.NewParkingLot(ParkingCapacity)
-	gui := view.NewGUI(parkingLot, TotalCars)
+	gui := view.NewGUI(parkingLot)
 	carChannel := make(chan *models.Car, CarChannelBuffer)
-	
-	var wg sync.WaitGroup
-	go services.GenerateCars(TotalCars, carChannel, &wg,VelocityGenerationCar)
-	go services.ProcessCarWorker(carChannel, gui, &wg)
+	observerGenerator := observer.GetInstance()
+
+    generators := make([]*services.CarGenerator, 3)
+     
+	for i := 0; i < 3; i++ {
+	  generators[i] = services.NewCarGenerator(VelocityGenerationCar, carChannel)
+	  observerGenerator.Subscribe(generators[i])
+	} 
+
+	for i := 0; i < 3; i++ {
+		go generators[i].Generate()
+	}
+
+  
+	go view.ProcessCarWorker(carChannel, gui)
 	gui.Run()
-	wg.Wait()
 }

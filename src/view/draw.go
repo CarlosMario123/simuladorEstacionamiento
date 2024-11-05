@@ -18,7 +18,6 @@ func (gui *GUI) Draw(screen *ebiten.Image) {
     city.DrawRoad(screen, 0, float64(RoadYEntry), float64(gui.windowWidth), float64(RoadHeight), color.RGBA{R: 50, G: 50, B: 50, A: 255}, color.White)
 
     city.DrawRoad(screen, 0, float64(RoadYExit), float64(gui.windowWidth), float64(RoadHeight), color.RGBA{R: 50, G: 50, B: 50, A: 255}, color.White)
-    gui.QueueView.Draw(screen)
     parking.DrawParkingSpaces(screen, gui.ParkingLot, ParkingStartX, ParkingStartY, SpaceWidth, SpaceHeight, Spacing, SpacesPerRow)
 
  

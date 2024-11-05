@@ -1,9 +1,14 @@
 package models
+
 import (
     "image/color"
     "math/rand"
     "time"
 )
+
+func init() {
+    rand.Seed(time.Now().UnixNano()) // Asegura que los números generados sean diferentes en cada ejecución
+}
 
 type CarState int
 
@@ -11,7 +16,7 @@ const (
     Searching CarState = iota
     Parked
     Exiting
-    Waiting // Esto se se usa para la cola
+    Waiting
 )
 
 type Car struct {
@@ -23,16 +28,16 @@ type Car struct {
     ParkingDuration time.Duration
     AttemptCount    int
     Color           color.RGBA
-    lastAttemptTime time.Time 
+    lastAttemptTime time.Time
 }
 
-func NewCar(id int) *Car {
+func NewCar() *Car {
+   
     return &Car{
-        ID:              id,
+        ID:              rand.Intn(1000000),
         Estado:          Searching,
         Position:        0.0,
-        ParkingDuration: time.Duration(rand.Intn(30)+30) * time.Second,
-
+        ParkingDuration: time.Duration(8 + rand.Intn(3)) * time.Second,
         Color: color.RGBA{
             R: uint8(rand.Intn(256)),
             G: uint8(rand.Intn(256)),
@@ -42,26 +47,26 @@ func NewCar(id int) *Car {
         lastAttemptTime: time.Now(),
     }
 }
-// avanza a derecha
+
+// Funciones adicionales de la clase Car
 func (c *Car) Move() {
     c.Position += 0.0090
     if c.Position > 1.0 {
         c.Position = 1.0
     }
 }
+
 func (c *Car) MoveExit() {
-    c.Position -= 0.02 
-    if c.Position < -0.1 { 
+    c.Position -= 0.02
+    if c.Position < -0.1 {
         c.Position = -0.1
     }
 }
 
-// determina si el carro debe intentar estacionarse
 func (c *Car) ShouldAttemptParking() bool {
-
     return time.Since(c.lastAttemptTime) > 3*time.Second
 }
-// reinicia el tiempo del ultimo intento
+
 func (c *Car) ResetParkingAttempt() {
     c.lastAttemptTime = time.Now()
 }

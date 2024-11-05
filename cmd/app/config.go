@@ -1,9 +1,8 @@
 package main
 
 const (
-    TotalCars = 50
 	ParkingCapacity = 20
-	CarChannelBuffer = 200
+	CarChannelBuffer = 25
 )
 
-var VelocityGenerationCar = []float64{0.6, 1.0} 
+var VelocityGenerationCar = []float64{0.9, 1.2} 

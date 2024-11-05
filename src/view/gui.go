@@ -3,7 +3,6 @@ import (
 
     "fmt"
     "simulador/src/core/models"
-    "simulador/src/view/elements"
     "sync"
     "github.com/hajimehoshi/ebiten/v2"
 )
@@ -12,9 +11,7 @@ type GUI struct {
     ParkingLot    *models.ParkingLot
     CarsInMotion  []*models.Car
     CarsWaiting   []*models.Car
-    ParkedCars    []*models.Car
-    Queue         *models.Queue          
-    QueueView     *elements.QueueView    
+    ParkedCars    []*models.Car   
     Mutex         sync.Mutex
     windowWidth   int
     windowHeight  int
@@ -29,20 +26,15 @@ const (
     MaxQueueSize = 30 
 )
 
-func NewGUI(parkingLot *models.ParkingLot, totalCars int) *GUI {
-    queue := models.NewQueue(MaxQueueSize) 
-    queueView := elements.NewQueueView(queue, QueueStartX, QueueStartY, QueueWidth, QueueHeight) // Inicializa `QueueView` con `Queue`
+func NewGUI(parkingLot *models.ParkingLot) *GUI {
 
     return &GUI{
         ParkingLot:    parkingLot,
         CarsInMotion:  []*models.Car{},
         CarsWaiting:   []*models.Car{},
         ParkedCars:    []*models.Car{},
-        Queue:         queue,        
-        QueueView:     queueView,     
         windowWidth:   1000,
         windowHeight:  600,
-        totalCars:     totalCars,
         processedCars: 0,
         quit:          make(chan struct{}),
         shouldExit:    false,

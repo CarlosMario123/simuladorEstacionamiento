@@ -61,7 +61,7 @@ func (p *ParkingLot) OccupySpace(car *Car) (int, error) {
     return -1, errors.New("no hay espacios disponibles")
 }
 
-//liberamos un espacio de estacionamiento.
+
 func (p *ParkingLot) ReleaseSpace(car *Car) error {
     if car.Estado != Parked || car.ParkingSpaceID == -1 {
         return errors.New("el carro no está estacionado")
@@ -77,7 +77,7 @@ func (p *ParkingLot) ReleaseSpace(car *Car) error {
             car.Estado = Exiting
             car.ParkingSpaceID = -1
             fmt.Printf("Carro %d ha liberado el espacio %d y está saliendo.\n", car.ID, space.ID)
-            <-p.semaphore //eres libre semaforo
+            <-p.semaphore 
             return nil
         }
     }
